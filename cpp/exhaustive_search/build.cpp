@@ -26,8 +26,8 @@ bool two_bridges_intersect(const Bridge & b1,
 
 bool any_bridges_intersect(const vector<Bridge> & bridges) {
     if(size(bridges) > 1) {
-        for (auto i = 0; i < size(bridges); ++i) {
-            for (auto j = 0; j < size(bridges); ++j) {
+        for (auto i = 0; i < size(bridges)-1; ++i) {
+            for (auto j = 1; j < size(bridges); ++j) {
                 if (two_bridges_intersect(bridges[i], bridges[j])) {
                     return true;
                 }
@@ -108,5 +108,8 @@ int build(int w, int e, const vector<Bridge> & bridges){
             toll_totals.push_back(toll_sum);
         }
     }
-    return toll_sum;
+    if(size(toll_totals) < 1){
+        return 0;
+    }
+    return *max_element(toll_totals.begin(), toll_totals.end());
 }

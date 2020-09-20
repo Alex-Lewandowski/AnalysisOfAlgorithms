@@ -66,6 +66,10 @@ ex4 = [[0, 0, 3],
        [3, 3, 8],
        [4, 2, 6]]
 
+ex5 = [[0, 0, 9],
+       [0, 3, 8],
+       [0, 0, 15]]
+
 # pwr_set = power_set_indices(len(ex2))
 # print(pwr_set)
 # print(len(pwr_set))
@@ -77,5 +81,5 @@ ex4 = [[0, 0, 3],
 # print(f"any_bridges_intersect(ex3): {any_bridges_intersect(ex3)}")
 # print(f"any_bridges_intersect(ex4): {any_bridges_intersect(ex4)}")
 
-best_bridges = build(ex2)
+best_bridges = build(ex5)
 print(f"Max toll is ${best_bridges[0]}0, using bridges {best_bridges[1]}")
