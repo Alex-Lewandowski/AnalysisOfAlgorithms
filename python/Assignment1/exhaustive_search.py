@@ -1,7 +1,16 @@
-def bridges_intersect(b1: list, b2: list) -> bool:
+import math
+
+def two_bridges_intersect(b1: list, b2: list) -> bool:
     return (b2[0] > b1[0] and b2[1] < b1[1]) or \
            (b2[0] < b1[0] and b2[1] > b1[1])
 
+
+def any_bridges_intersect(bridges: list,) -> bool:
+    for i, b1 in enumerate(bridges):
+        for j, b2 in enumerate(bridges[: int(math.sqrt(len(bridges)))]):
+            if two_bridges_intersect(b1, b2):
+                return True
+    return False
 
 def bridges_share_city(bridges) -> bool:
     cities_w = [item[0] for item in bridges]
@@ -28,7 +37,7 @@ def power_set_indices(list_len):
 
 bridge_1 = [4, 8]
 bridge_2 = [6, 6]
-print(bridges_intersect(bridge_1, bridge_2))
+print(two_bridges_intersect(bridge_1, bridge_2))
 
 ex2 = [[0, 1, 3],
        [1, 1, 5],
@@ -42,6 +51,12 @@ ex3 = [[0, 0, 3],
        [3, 3, 8],
        [4, 4, 6]]
 
+ex4 = [[0, 0, 3],
+       [1, 1, 5],
+       [2, 2, 4],
+       [3, 3, 8],
+       [4, 0, 6]]
+
 pwr_set = power_set_indices(len(ex2))
 print(pwr_set)
 print(len(pwr_set))
@@ -49,3 +64,10 @@ print(len(pwr_set))
 print(bridges_share_city(ex2))
 print(bridges_share_city(ex3))
 
+'''
+for subset in pwr_set:
+    if
+'''
+print(f"any_bridges_intersect(ex2): {any_bridges_intersect(ex2)}")
+print(f"any_bridges_intersect(ex3): {any_bridges_intersect(ex3)}")
+print(f"any_bridges_intersect(ex4): {any_bridges_intersect(ex4)}")
