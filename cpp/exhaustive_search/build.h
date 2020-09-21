@@ -28,9 +28,8 @@ bool any_bridges_intersect(const std::vector<Bridge> & bridges);
 bool any_bridges_share_city(const std::vector<int> & cities_w,
                             const std::vector<int> & cities_e);
 
-std::vector<std::vector<int>> power_set_indices(int n);
+std::set<std::vector<int>> power_set_indices(int n);
 
 int build(int w, int e, const std::vector<Bridge> & bridges);
-
 
 #endif//EXHAUSTIVE_SEARCH_BUILD_H
