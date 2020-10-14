@@ -24,6 +24,8 @@ using std::remove_reference;
 template<typename RAIter>
 size_t inversions(RAIter first, RAIter last);
 
+template<typename RAIter>
+size_t stableMerge(RAIter first, RAIter middle, RAIter last);
 
 template<typename RAIter>
 size_t stableMerge(RAIter first, RAIter middle, RAIter last) {
