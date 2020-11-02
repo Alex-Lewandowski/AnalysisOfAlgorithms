@@ -1,7 +1,0 @@
-name: cs411_hw
-channels:
-  - conda-forge
-dependencies:
-  - python=3.7
-  - numpy
-
