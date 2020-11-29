@@ -34,13 +34,9 @@ using std::unordered_map;
 #include <memory>
 using std::shared_ptr;
 using std::make_shared;
-#include <iostream>
-using std::cout;
-using std::endl;
 #include <utility>
 using std::pair;
 using std::make_pair;
-
 
 void HuffCode::setWeights(const unordered_map<char, int> & theweights)
 {
@@ -49,12 +45,9 @@ void HuffCode::setWeights(const unordered_map<char, int> & theweights)
         auto n = Node(make_pair(a.second, a.first));
         this->_queue.push(n);
     }
-
-//    Debugging: Prints _queue after filling with char nodes, before creating tree
-//    while(!_queue.empty()) {
-//        cout << _queue.top().get_data().first << " : " << _queue.top().get_data().second << endl;
-//        _queue.pop();
-//    }
+    if (size(_queue) == 0) {
+        return;
+    }
 
     // Create binary tree with char Nodes as leaves
     // After loop, _queue contains root
@@ -71,36 +64,35 @@ void HuffCode::setWeights(const unordered_map<char, int> & theweights)
     }
     auto root = make_shared<Node>(_queue.top());
     auto code = write_huff_dict(root, "");
-    auto x = "debug";
 }
 
 
-string HuffCode::write_huff_dict(shared_ptr<Node> node,const string & code) {
+string HuffCode::write_huff_dict(shared_ptr<Node> node, const string & code) {
     if (node->get_left() == nullptr) {
-        _code_dict[node->get_data().second] = code;
-        return code.substr(0, size(code)-1);
+        if (code == "") {
+            _code_dict[node->get_data().second] = "0";
+        } else {
+            _code_dict[node->get_data().second] = code;
+        }
+        return code.substr(0, size(code) - 1);
     }
     auto cd = code;
-    cout << node->get_data().first << node->get_data().second << endl;
+    // cout << node->get_data().first << node->get_data().second << endl;
     cd = write_huff_dict(node->get_left(), cd + '0');
-
     cd = write_huff_dict(node->get_right(), cd + '1');
-    return code;
+    return cd.substr(0, size(cd) - 1);
 }
 
 string HuffCode::lookup(char c) const {
-//    return this->_code_dict[c];
     auto ans = _code_dict.find(c);
     return ans->second;
-//    return this->_code_dict[0];
-//    return "";
 }
 
 string HuffCode::encode(const string & text) const
 {
-    string code = "";
+    string code;
     for (auto c : text) {
-        code.append(this->lookup(c));
+        code.append(this->lookup(tolower(c)));
     }
     return code;
 }
@@ -108,17 +100,27 @@ string HuffCode::encode(const string & text) const
 
 string HuffCode::decode(const string & codestr) const
 {
-    // WRITE THIS!!!
-    return "";  // DUMMY RETURN
-}
+    string ovaltine;
+    if (this->_queue.empty()) {
+        return "";
+    }
+    auto curr_node = make_shared<Node>(this->_queue.top());
+    for (auto c : codestr) {
+        if (c == '0'){
+            curr_node = curr_node->get_left();
+        }
+        else {
+            curr_node = curr_node->get_right();
+        }
+        if (curr_node->get_left() == nullptr) {
+            auto chh = curr_node->get_data().second;
+            ovaltine = ovaltine + chh;
+//            ovaltine.append(reinterpret_cast<const char *>(curr_node->get_data().second));
+            curr_node = make_shared<Node>(this->_queue.top());
+        }
 
-
-void Node::setLeft(const Node & left) {
-    this->_left = make_shared<Node>(left);
-}
-
-void Node::setRight(const Node & right) {
-    this->_left = make_shared<Node>(right);
+    }
+    return ovaltine;  // DUMMY RETURN
 }
 
 std::shared_ptr<Node> Node::get_left() {

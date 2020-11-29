@@ -48,19 +48,14 @@
 //    std::shared_ptr<Node<T>> _right;
 //};
 
-class  Node
-{
+class Node {
 public:
-    Node() : _data(std::pair<int, char>()) {}
-    explicit Node(std::pair<int, char> value) : _data(std::move(value)), _left(nullptr), _right(nullptr){}
+    Node(): _data(std::pair<int, char>()) {}
+    explicit Node(std::pair<int, char> value): _data(std::move(value)), _left(nullptr), _right(nullptr){}
     explicit Node(std::pair<int, char> value,
                   std::shared_ptr<Node> left,
-                  std::shared_ptr<Node> right) :
-                  _data(std::move(value)), _left(left), _right(right) {}
-
-
-    void setLeft(const Node & left);
-    void setRight(const Node & right);
+                  std::shared_ptr<Node> right):
+                  _data(std::move(value)), _left(std::move(left)), _right(std::move(right)) {}
 
     [[nodiscard]] std::pair<int, char> get_data() const {
         return this->_data;
@@ -83,9 +78,10 @@ private:
 // Encoding & decoding using a Huffman code
 class HuffCode {
 
+
 // ***** HuffCode: ctors, dctor, op= *****
 public:
-
+    HuffCode(): _queue(std::priority_queue<Node, std::vector<Node>, std::greater<>>()) {}
     // Compiler-generated default ctor, copy ctor, copy =, dctor used
 
 // ***** HuffCode: general public functions *****
